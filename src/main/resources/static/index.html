@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>双色球</title>
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        /* 设置红球选区和蓝球选区并排显示,边框为圆角、半透明且大小一致  */
+        .select {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 5px;
+            width: 420px;
+            height: 250px;
+            overflow: auto;
+            /* 设置浮动,使得两个选区并排显示 */
+            float: left;
+        }
+
+        /* 让checkbox不显示 */
+        .select input {
+            display: none;
+        }
+
+        /* 设置label的样式,有一个圆形外框,禁止被用户选中文本 */
+        .select label {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            margin: 5px;
+            user-select: none;
+        }
+
+        /* 设置被用户选中的input checkbox 对应的label的样式,背景色为红色 */
+        .select.red label:has(input[type=checkbox]:checked) {
+            background-color: red;
+            color: #fff;
+        }
+
+        /* 设置蓝球选区的样式,背景色为蓝色 */
+        .select.blue label:has(input[type=checkbox]:checked) {
+            background-color: blue;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<!-- 充当Vue的挂载容器 -->
+<!-- 当在未采用构建流程的情况下使用 Vue 时，我们可以在挂载容器中直接书写根组件模板 -->
+<div id="app">
+    <h1>双色球</h1>
+    <button @click="start = !start">{{ start ? "开始" : "返回简介" }}</button>
+    <div v-if="start">
+        <p>这是一个模拟双色球的前后端项目，前端负责收集用户输入，并呈现页面视图，后端负责处理中奖的业务逻辑</p>
+        <p>前端技术栈：Vue3<br>
+            后端技术栈：SpringBoot</p>
+    </div>
+    <!-- 红球选区和蓝球选区并排显示 -->
+    <div v-else>
+        <div class="select red">
+            <h3>红球选区</h3>
+            {{ redBalls }} <br>
+            <template v-for="n in 33">
+                <label>
+                    <input :value="n" type="checkbox" v-model="redBalls">
+                    {{ n }}
+                </label>
+                <br v-if="n % 10 === 0">
+            </template>
+        </div>
+        <div class="select blue">
+            <h3>蓝球选区</h3>
+            {{ blueBalls }} <br>
+            <template v-for="n in 16">
+                <label>
+                    <input :value="n" type="checkbox" v-model="blueBalls">
+                    {{ n }}
+                </label>
+                <br v-if="n % 10 === 0">
+            </template>
+        </div>
+        <!-- 清空按钮 -->
+        <div style="clear:both"> <!-- 元素被向下移动以清除左右浮动 -->
+            <button @click="clear">清空选择</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 解构Vue3的API
+    const {createApp, ref, watch} = Vue
+    // 创建Vue实例
+    const app = createApp({
+        setup() {
+            // 声明数据、方法
+            let start = ref(true)
+            let redBalls = ref([])
+            let blueBalls = ref([])
+
+            // 清空数据
+            function clear() {
+                redBalls.value = []
+                blueBalls.value = []
+            }
+
+            // 监听数据变化
+            watch(redBalls, (newVal, oldVal) => {
+                // 限制红球的个数
+                if (newVal.length > 6) {
+                    redBalls.value = oldVal
+                    return;
+                }
+                // 从小到大排序，确保数组始终有序
+                redBalls.value = newVal.sort((a, b) => a - b);
+            })
+            watch(blueBalls, (newVal, oldVal) => {
+                // 限制蓝球的个数
+                if (newVal.length > 1) {
+                    blueBalls.value = oldVal
+                }
+            })
+            return {
+                // 暴露给模板
+                start,
+                redBalls,
+                blueBalls,
+                clear
+            }
+        }
+    })
+    // 挂载
+    app.mount('#app')
+</script>
+
+</body>
+</html>

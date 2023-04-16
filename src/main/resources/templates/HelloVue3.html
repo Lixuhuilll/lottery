@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>经典Hello</title>
+    <!-- 引入 Vue3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<!-- 充当Vue的挂载容器 -->
+<!-- 当在未采用构建流程的情况下使用 Vue 时，我们可以在挂载容器中直接书写根组件模板 -->
+<div id="app">{{ message }}</div>
+
+<script>
+    // 解构Vue3的API
+    const {createApp, ref} = Vue
+    // 创建Vue实例
+    const app = createApp({
+        setup() {
+            // 声明数据、方法
+            const message = ref('Hello Vue3!')
+
+            return {
+                // 暴露给模板
+                message
+            }
+        }
+    })
+    // 挂载
+    app.mount('#app')
+</script>
+
+</body>
+</html>
