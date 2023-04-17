@@ -96,8 +96,9 @@
             <p v-if="winMoney !== null">
                 中奖号码为：红球：{{winRedBalls}} 蓝球：{{winBlueBalls}} <br>
                 您本次的中奖金额为：{{winMoney}} <br>
-                总抽奖次数：{{count}} &nbsp总中奖次数：{{total}} <br>
-                总收益：{{money}} &nbsp&nbsp&nbsp总中奖金额：{{totalMoney}} &nbsp最高中奖金额：{{maxTotalMoney}} <br>
+                总抽奖次数：{{count}} &nbsp总中奖次数：{{total}} &nbsp综合中奖率：{{total / count * 100}} % <br>
+                总中奖金额：{{totalMoney}} &nbsp最高中奖金额：{{maxTotalMoney}} <br>
+                总投入：{{count * 2}} &nbsp&nbsp净收益：{{money}} <br>
                 <button @click="clear">清空所有数据</button>
             </p>
         </div>
