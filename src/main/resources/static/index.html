@@ -96,8 +96,8 @@
             <p v-if="winMoney !== null">
                 中奖号码为：红球：{{winRedBalls}} 蓝球：{{winBlueBalls}} <br>
                 您本次的中奖金额为：{{winMoney}} <br>
-                总抽奖次数：{{total}} <br>
-                总收益：{{totalMoney}} <br>
+                总抽奖次数：{{count}} &nbsp总中奖次数：{{total}} <br>
+                总收益：{{money}} &nbsp&nbsp&nbsp总中奖金额：{{totalMoney}} &nbsp最高中奖金额：{{maxTotalMoney}} <br>
                 <button @click="clear">清空所有数据</button>
             </p>
         </div>
@@ -118,9 +118,13 @@
             let winBlueBalls = ref(null)
             let winMoney = ref(null)
             // 总抽奖次数
-            let total = ref(0)
+            let count = ref(0)
             // 总收益
+            let money = ref(0)
+            // 中奖信息
+            let total = ref(0)
             let totalMoney = ref(0)
+            let maxTotalMoney = ref(0)
 
             // 清空选球数据
             function clearBalls() {
@@ -136,6 +140,9 @@
                 winMoney.value = null
                 total.value = 0
                 totalMoney.value = 0
+                money.value = 0
+                count.value = 0
+                maxTotalMoney.value = 0
             }
 
             // 随机选号
@@ -176,9 +183,16 @@
                 winMoney.value = res_data.money;
                 winRedBalls.value = res_data.winLottery.red_balls.sort((a, b) => a - b);
                 winBlueBalls.value = res_data.winLottery.blue_balls.sort((a, b) => a - b);
-                total.value += 1;
-                totalMoney.value -= 2;
-                totalMoney.value += res_data.money;
+                count.value += 1;
+                money.value -= 2;
+                money.value += res_data.money;
+                if (res_data.money > 0) {
+                    total.value += 1;
+                    totalMoney.value += res_data.money;
+                }
+                if (res_data.money > maxTotalMoney.value) {
+                    maxTotalMoney.value = res_data.money;
+                }
             }
 
             // 监听数据变化
@@ -207,8 +221,11 @@
                 redBalls,
                 blueBalls,
                 winMoney,
+                count,
+                money,
                 total,
                 totalMoney,
+                maxTotalMoney,
                 winRedBalls,
                 winBlueBalls
             }
