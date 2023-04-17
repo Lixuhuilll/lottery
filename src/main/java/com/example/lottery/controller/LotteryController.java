@@ -5,6 +5,7 @@ import com.example.lottery.entity.LotteryMsg;
 import com.example.lottery.util.LotteryUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,7 +15,7 @@ public class LotteryController {
     @ResponseBody
     @PostMapping("/lottery")
     public LotteryMsg lottery(@RequestParam(defaultValue = "1") int num,
-                              Lottery input) {
+                              @RequestBody Lottery input) {
         if (input == null || input.getRedBalls() == null || input.getBlueBalls() == null
                 || input.getRedBalls().size() != 6 || input.getBlueBalls().size() != 1) {
             return null;

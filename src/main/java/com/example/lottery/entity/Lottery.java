@@ -1,5 +1,6 @@
 package com.example.lottery.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -18,7 +19,9 @@ public class Lottery {
     private static final int DEFAULT_MIN_BLUE_BALL = 1;
     private static final int DEFAULT_MAX_BLUE_BALL = 16;
 
+    @JsonProperty("red_balls")
     private Set<Integer> redBalls = new HashSet<>();
+    @JsonProperty("blue_balls")
     private Set<Integer> blueBalls = new HashSet<>();
 
     /**

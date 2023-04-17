@@ -88,6 +88,11 @@
         <!-- 清空按钮 -->
         <div style="clear:both"> <!-- 元素被向下移动以清除左右浮动 -->
             <button @click="clear">清空选择</button>
+            <button @click="post">开奖</button>
+            <p v-if="winMoney !== null">
+                中奖号码为：红球：{{winRedBalls}} 蓝球：{{winBlueBalls}} <br>
+                您的中奖金额为：{{winMoney}}
+            </p>
         </div>
     </div>
 </div>
@@ -102,11 +107,33 @@
             let start = ref(true)
             let redBalls = ref([])
             let blueBalls = ref([])
-
+            let winRedBalls = ref(null)
+            let winBlueBalls = ref(null)
+            let winMoney = ref(null)
             // 清空数据
             function clear() {
                 redBalls.value = []
                 blueBalls.value = []
+            }
+            // 提交 post请求，获取响应
+            async function post() {
+                const req_data = {
+                    red_balls: redBalls.value,
+                    blue_balls: blueBalls.value
+                }
+                const res = await fetch('/lottery',
+                    {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(req_data)
+                    }
+                )
+                const res_data = await res.json();
+                winMoney.value = res_data.money;
+                winRedBalls.value = res_data.winLottery.red_balls;
+                winBlueBalls.value = res_data.winLottery.blue_balls;
             }
 
             // 监听数据变化
@@ -130,7 +157,11 @@
                 start,
                 redBalls,
                 blueBalls,
-                clear
+                clear,
+                post,
+                winMoney,
+                winRedBalls,
+                winBlueBalls
             }
         }
     })
