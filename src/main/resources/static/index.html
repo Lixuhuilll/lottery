@@ -38,13 +38,13 @@
         }
 
         /* 设置被用户选中的input checkbox 对应的label的样式,背景色为红色 */
-        .select.red label:has(input[type=checkbox]:checked) {
+        .select.red label.red {
             background-color: red;
             color: #fff;
         }
 
         /* 设置蓝球选区的样式,背景色为蓝色 */
-        .select.blue label:has(input[type=checkbox]:checked) {
+        .select.blue label.blue {
             background-color: blue;
             color: #fff;
         }
@@ -67,7 +67,7 @@
             <h3>红球选区</h3>
             {{ redBalls }} <br>
             <template v-for="n in 33">
-                <label>
+                <label :class="{red: redBalls.includes(n)}">
                     <input :value="n" type="checkbox" v-model="redBalls">
                     {{ n }}
                 </label>
@@ -78,7 +78,7 @@
             <h3>蓝球选区</h3>
             {{ blueBalls }} <br>
             <template v-for="n in 16">
-                <label>
+                <label :class="{blue: blueBalls.includes(n)}">
                     <input :value="n" type="checkbox" v-model="blueBalls">
                     {{ n }}
                 </label>
