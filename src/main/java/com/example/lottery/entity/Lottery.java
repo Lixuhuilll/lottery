@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 彩票
@@ -20,9 +19,9 @@ public class Lottery {
     private static final int DEFAULT_MAX_BLUE_BALL = 16;
 
     @JsonProperty("red_balls")
-    private Set<Integer> redBalls = new HashSet<>();
+    private HashSet<Integer> redBalls;
     @JsonProperty("blue_balls")
-    private Set<Integer> blueBalls = new HashSet<>();
+    private HashSet<Integer> blueBalls;
 
     /**
      * 随机生成一注彩票
@@ -37,8 +36,8 @@ public class Lottery {
     public void random(int redBallCount, int blueBallCount,
                        int minRedBall, int maxRedBall,
                        int minBlueBall, int maxBlueBall) {
-        redBalls.clear();
-        blueBalls.clear();
+        redBalls = new HashSet<>();
+        blueBalls = new HashSet<>();
         // 集合的特性，不会重复，所以不用担心重复的问题
         while (redBalls.size() < redBallCount) {
             // Math.random() 产生的是 >= 0.0 且 < 1.0 的随机数,min需要 >= 1,max才取得到
