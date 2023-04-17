@@ -87,16 +87,18 @@
         </div>
         <!-- 清空按钮 -->
         <div style="clear:both"> <!-- 元素被向下移动以清除左右浮动 -->
-            <button @click="clear">清空选择</button>
-            <button @click="random">随机选号</button>
+            <button @click="clearBalls">清空选球</button>
+            <button @click="randomBalls">随机选号</button>
             <button :disabled="redBalls.length !== 6
             || blueBalls.length !== 1" @click="data_post">开奖
             </button>
-            <button @click="random();data_post()">随机选号并开奖</button>
+            <button @click="randomBalls();data_post()">随机选号并开奖</button>
             <p v-if="winMoney !== null">
                 中奖号码为：红球：{{winRedBalls}} 蓝球：{{winBlueBalls}} <br>
                 您本次的中奖金额为：{{winMoney}} <br>
-                总收益：{{totalMoney}}
+                总抽奖次数：{{total}} <br>
+                总收益：{{totalMoney}} <br>
+                <button @click="clear">清空所有数据</button>
             </p>
         </div>
     </div>
@@ -115,18 +117,30 @@
             let winRedBalls = ref(null)
             let winBlueBalls = ref(null)
             let winMoney = ref(null)
+            // 总抽奖次数
+            let total = ref(0)
             // 总收益
             let totalMoney = ref(0)
 
-            // 清空数据
-            function clear() {
+            // 清空选球数据
+            function clearBalls() {
                 redBalls.value = []
                 blueBalls.value = []
             }
 
+            // 清空所有数据
+            function clear() {
+                clearBalls()
+                winRedBalls.value = null
+                winBlueBalls.value = null
+                winMoney.value = null
+                total.value = 0
+                totalMoney.value = 0
+            }
+
             // 随机选号
-            function random() {
-                clear()
+            function randomBalls() {
+                clearBalls()
                 const red = redBalls.value
                 const blue = blueBalls.value
                 while (red.length < 6) {
@@ -162,6 +176,7 @@
                 winMoney.value = res_data.money;
                 winRedBalls.value = res_data.winLottery.red_balls.sort((a, b) => a - b);
                 winBlueBalls.value = res_data.winLottery.blue_balls.sort((a, b) => a - b);
+                total.value += 1;
                 totalMoney.value -= 2;
                 totalMoney.value += res_data.money;
             }
@@ -184,13 +199,15 @@
             })
             return {
                 // 暴露给模板
+                clearBalls,
                 clear,
                 data_post,
-                random,
+                randomBalls,
                 start,
                 redBalls,
                 blueBalls,
                 winMoney,
+                total,
                 totalMoney,
                 winRedBalls,
                 winBlueBalls

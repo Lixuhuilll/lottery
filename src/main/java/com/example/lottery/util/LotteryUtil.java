@@ -17,25 +17,24 @@ public class LotteryUtil {
      */
     public static int twoColorBallCalculate(Lottery winLottery, Lottery input) {
         int[] winner = getWinner(winLottery, input);
-        int money = 0;
-        switch (winner[1]) {
-            case 0 -> {
-                switch (winner[0]) {
-                    case 4 -> money = 10;
-                    case 5 -> money = 200;
-                    case 6 -> money = 1250000;
-                }
-            }
-            case 1 -> {
-                switch (winner[0]) {
-                    case 0, 1, 2 -> money = 5;
-                    case 3, 4 -> money = 10;
-                    case 5 -> money = 3000;
-                    case 6 -> money = 5000000;
-                }
-            }
-        }
-        return money;
+
+        return switch (winner[1]) {
+            case 0 -> switch (winner[0]) {
+                case 4 -> 10;
+                case 5 -> 200;
+                case 6 -> 125_0000; // 125万
+                default -> 0;
+            };
+            case 1 -> switch (winner[0]) {
+                case 0, 1, 2 -> 5;
+                case 3 -> 10;
+                case 4 -> 200;
+                case 5 -> 3000;
+                case 6 -> 500_0000; // 500万
+                default -> 0;
+            };
+            default -> 0;
+        };
     }
 
     /**
