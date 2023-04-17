@@ -10,7 +10,7 @@ public class LotteryUtil {
      * 4+1、5+0 单注200元 <br>
      * 5+1 单注3000元 <br>
      * 6+0 单注125万 <br>
-     * 6+1 单注五百万
+     * 6+1 单注500万
      *
      * @param winLottery 中奖彩票
      * @param input      用户输入的彩票

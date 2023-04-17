@@ -88,10 +88,15 @@
         <!-- 清空按钮 -->
         <div style="clear:both"> <!-- 元素被向下移动以清除左右浮动 -->
             <button @click="clear">清空选择</button>
-            <button @click="post">开奖</button>
+            <button @click="random">随机选号</button>
+            <button :disabled="redBalls.length !== 6
+            || blueBalls.length !== 1" @click="data_post">开奖
+            </button>
+            <button @click="random();data_post()">随机选号并开奖</button>
             <p v-if="winMoney !== null">
                 中奖号码为：红球：{{winRedBalls}} 蓝球：{{winBlueBalls}} <br>
-                您的中奖金额为：{{winMoney}}
+                您本次的中奖金额为：{{winMoney}} <br>
+                总收益：{{totalMoney}}
             </p>
         </div>
     </div>
@@ -110,13 +115,36 @@
             let winRedBalls = ref(null)
             let winBlueBalls = ref(null)
             let winMoney = ref(null)
+            // 总收益
+            let totalMoney = ref(0)
+
             // 清空数据
             function clear() {
                 redBalls.value = []
                 blueBalls.value = []
             }
+
+            // 随机选号
+            function random() {
+                clear()
+                const red = redBalls.value
+                const blue = blueBalls.value
+                while (red.length < 6) {
+                    const n = Math.floor(Math.random() * 33) + 1
+                    if (!red.includes(n)) {
+                        red.push(n)
+                    }
+                }
+                while (blue.length < 1) {
+                    const n = Math.floor(Math.random() * 16) + 1
+                    if (!blue.includes(n)) {
+                        blue.push(n)
+                    }
+                }
+            }
+
             // 提交 post请求，获取响应
-            async function post() {
+            async function data_post() {
                 const req_data = {
                     red_balls: redBalls.value,
                     blue_balls: blueBalls.value
@@ -132,8 +160,10 @@
                 )
                 const res_data = await res.json();
                 winMoney.value = res_data.money;
-                winRedBalls.value = res_data.winLottery.red_balls;
-                winBlueBalls.value = res_data.winLottery.blue_balls;
+                winRedBalls.value = res_data.winLottery.red_balls.sort((a, b) => a - b);
+                winBlueBalls.value = res_data.winLottery.blue_balls.sort((a, b) => a - b);
+                totalMoney.value -= 2;
+                totalMoney.value += res_data.money;
             }
 
             // 监听数据变化
@@ -154,12 +184,14 @@
             })
             return {
                 // 暴露给模板
+                clear,
+                data_post,
+                random,
                 start,
                 redBalls,
                 blueBalls,
-                clear,
-                post,
                 winMoney,
+                totalMoney,
                 winRedBalls,
                 winBlueBalls
             }
