@@ -95,7 +95,11 @@
             </button>
             <button :disabled="round" @click="randomAndPost">随机选号并开奖</button>
             <!-- 循环控制按钮通过css样式与其他按钮隔开距离 -->
-            <button @click="roundPost" style="margin-left: 5%">{{round ? "停止循环" : "循环选号开奖"}}</button>
+            <button :disabled="!round &&
+            (redBalls.length !== 6 || blueBalls.length !== 1)" @click="roundPost"
+                    style="margin-left: 5%">{{round ? "停止循环" : "循环开奖"}}
+            </button>
+            <button @click="roundRandomPost">{{round ? "停止循环" : "循环选号开奖"}}</button>
             <p v-if="winMoney !== null">
                 中奖号码为：红球：{{winRedBalls}} 蓝球：{{winBlueBalls}} <br>
                 您本次的中奖金额为：{{winMoney}}元 <br>
@@ -169,6 +173,11 @@
 
             // 提交 post请求，获取响应
             async function dataPost() {
+                if (redBalls.value.length !== 6 || blueBalls.value.length !== 1) {
+                    // 休眠1秒
+                    await new Promise(resolve => setTimeout(resolve, 1000))
+                    return
+                }
                 const req_data = {
                     red_balls: redBalls.value,
                     blue_balls: blueBalls.value
@@ -208,6 +217,18 @@
                     // 立即执行匿名异步函数
                     (async () => {
                         while (round.value) {
+                            await dataPost()
+                        }
+                    })()
+                }
+            }
+
+            function roundRandomPost() {
+                round.value = !round.value
+                if (round.value) {
+                    // 立即执行匿名异步函数
+                    (async () => {
+                        while (round.value) {
                             await randomAndPost()
                         }
                     })()
@@ -238,6 +259,7 @@
                 randomBalls,
                 randomAndPost,
                 roundPost,
+                roundRandomPost,
                 start,
                 redBalls,
                 blueBalls,
