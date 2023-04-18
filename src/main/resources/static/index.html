@@ -88,12 +88,12 @@
         <!-- 清空按钮 -->
         <div style="clear:both"> <!-- 元素被向下移动以清除左右浮动 -->
             <!-- 循环开始后，只有停止循环按钮能点击 -->
-            <button @click="clearBalls" :disabled="round">清空选球</button>
-            <button @click="randomBalls" :disabled="round">随机选号</button>
+            <button :disabled="round" @click="clearBalls">清空选球</button>
+            <button :disabled="round" @click="randomBalls">随机选号</button>
             <button :disabled="redBalls.length !== 6
             || blueBalls.length !== 1 || round" @click="dataPost">开奖
             </button>
-            <button @click="randomAndPost" :disabled="round">随机选号并开奖</button>
+            <button :disabled="round" @click="randomAndPost">随机选号并开奖</button>
             <!-- 循环控制按钮通过css样式与其他按钮隔开距离 -->
             <button @click="roundPost" style="margin-left: 5%">{{round ? "停止循环" : "循环选号开奖"}}</button>
             <p v-if="winMoney !== null">
