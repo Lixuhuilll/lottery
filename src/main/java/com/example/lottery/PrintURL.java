@@ -46,9 +46,9 @@ public class PrintURL implements CommandLineRunner {
         } finally {
             // 还原headless模式
             System.setProperty("java.awt.headless", "true");
+            // 我希望本地项目地址最后输出，保证不会被错误信息挡住
+            log.info("本地项目地址：{}", uri);
         }
-        // 我希望本地项目地址最后输出，保证不会被错误信息挡住
-        log.info("本地项目地址：{}", uri);
     }
 
 }
