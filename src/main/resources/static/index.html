@@ -135,16 +135,16 @@
             let round = ref(false)
             let redBalls = ref([])
             let blueBalls = ref([])
-            let winRedBalls = ref(null)
-            let winBlueBalls = ref(null)
-            let winMoney = ref(null)
+            let winRedBalls = ref(null) // 中奖红球
+            let winBlueBalls = ref(null)    // 中奖蓝球
+            let winMoney = ref(null) // 中奖金额
             // 总抽奖次数
             let count = ref(0)
             // 中奖信息
-            let total = ref(0)
-            let totalMoney = ref(0)
-            let maxTotalMoney = ref(0)
-            const maxTotalMoneyInfo = ref({count: 0, time: null})
+            let total = ref(0)  // 总中奖次数
+            let totalMoney = ref(0) // 总中奖金额
+            let maxTotalMoney = ref(0) // 最高中奖金额
+            const maxTotalMoneyInfo = ref({count: 0, time: null}) // 最高中奖金额的抽奖次数和时间
 
             // 清空选球数据
             function clearBalls() {
