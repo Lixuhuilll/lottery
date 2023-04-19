@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>双色球</title>
-    <!--    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>-->
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- 本页面必须使用协商缓存 -->
     <meta http-equiv="Cache-Control" content="no-cache">
     <!-- 引入本地压缩版Vue3 -->
@@ -118,9 +118,12 @@
                 <button @click="clear">清空所有数据</button>
             </p>
             <div style="display: inline-block;vertical-align: top" v-if="maxTotalMoney >= 1250000">
-                恭喜获得大奖，奖金{{maxTotalMoney / 10000}}万元！<br>
-                您是在第{{maxTotalMoneyInfo.count}}次抽奖中获得大奖的！<br>
-                中奖时间为{{maxTotalMoneyInfo.time}}
+                <template v-for="info in maxTotalMoneyInfo">
+                    恭喜获得大奖，奖金{{info.money / 10000}}万元！<br>
+                    您是在第 {{info.count}} 次抽奖中获得大奖的！<br>
+                    中奖时间为：{{info.time}}<br>
+                    当时的净收益为：{{info.netMoney}}元<br>
+                </template>
             </div>
         </div>
     </div>
@@ -146,7 +149,7 @@
             let total = ref(0)  // 总中奖次数
             let totalMoney = ref(0) // 总中奖金额
             let maxTotalMoney = ref(0) // 最高中奖金额
-            const maxTotalMoneyInfo = ref({count: 0, time: null}) // 最高中奖金额的抽奖次数和时间
+            const maxTotalMoneyInfo = ref([]) // 最高中奖金额的抽奖次数和时间列表
 
             // 清空选球数据
             function clearBalls() {
@@ -217,7 +220,14 @@
                 }
                 if (res_data.money > maxTotalMoney.value) {
                     maxTotalMoney.value = res_data.money
-                    maxTotalMoneyInfo.value = {count: count.value, time: new Date().toLocaleString()}
+                }
+                if (res_data.money >= 1250000) {
+                    maxTotalMoneyInfo.value.push({
+                        money: res_data.money,
+                        count: count.value,
+                        time: new Date().toLocaleString(),
+                        netMoney: totalMoney.value - (count.value * 2)
+                    })
                 }
             }
 
