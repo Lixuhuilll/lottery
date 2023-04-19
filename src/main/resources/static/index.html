@@ -93,6 +93,16 @@
                 <br v-if="n % 10 === 0">
             </template>
         </div>
+        <div class="select">
+            <h3>大奖信息</h3>
+            <template v-for="info in maxTotalMoneyInfo">
+                第{{info.count}}次抽奖,奖金{{info.money / 10000}}万元<br>
+                中奖时间为：{{info.time}}<br>
+                当时的净收益为：{{info.netMoney}}元<br>
+                <!-- 分割线 -->
+                <hr>
+            </template>
+        </div>
         <!-- 清空按钮 -->
         <div style="clear:both"> <!-- 元素被向下移动以清除左右浮动 -->
             <!-- 循环开始后，只有停止循环按钮能点击 -->
@@ -117,14 +127,6 @@
                 &nbsp&nbsp平均每张彩票的收益(花2元得几元)：{{totalMoney / count}}元<br>
                 <button @click="clear">清空所有数据</button>
             </p>
-            <div style="display: inline-block;vertical-align: top" v-if="maxTotalMoney >= 1250000">
-                <template v-for="info in maxTotalMoneyInfo">
-                    恭喜获得大奖，奖金{{info.money / 10000}}万元！<br>
-                    您是在第 {{info.count}} 次抽奖中获得大奖的！<br>
-                    中奖时间为：{{info.time}}<br>
-                    当时的净收益为：{{info.netMoney}}元<br>
-                </template>
-            </div>
         </div>
     </div>
 </div>
