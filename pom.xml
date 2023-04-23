@@ -53,15 +53,22 @@
     <!-- 添加国内仓库 -->
     <repositories>
         <repository>
-            <id>aliyunmaven</id>
-            <name>aliyunmaven</name>
+            <id>aliyun</id>
+            <name>aliyun</name>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
-        <repository>
-            <id>aliyunmaven-spring-plugin</id>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>aliyun-spring-plugin</id>
             <name>阿里开源镜像站</name>
             <url>https://maven.aliyun.com/repository/spring-plugin</url>
-        </repository>
-    </repositories>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
